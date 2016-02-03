@@ -1,0 +1,3 @@
+let example = () => {};
+
+export default example;
