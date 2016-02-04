@@ -45,5 +45,22 @@ describe('babel-plugin-transform-export-default-name', () => {
                 expect(transformedCode).to.equal(expectedCode);
             });
         });
+        context('unsafe file name', () => {
+            it('uses _.camelCase to normalize the file name; uses normalized name to create a temporary variable; exports the temporary variable', () => {
+                let expectedCode,
+                    transformedCode;
+
+                expectedCode = getExpectedCode('unsafe-name');
+
+                transformedCode = transformFileSync(getInputCode('unsafe-name'), {
+                    babelrc: false,
+                    plugins: [
+                        plugin
+                    ]
+                }).code;
+
+                expect(transformedCode).to.equal(expectedCode);
+            });
+        });
     });
 });

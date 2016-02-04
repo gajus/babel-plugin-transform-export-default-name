@@ -54,6 +54,10 @@ let foo = () => {};
 export default foo;
 ```
 
+## Export Name
+
+The name used for a temporary variable is derived from the name of the file (excluding `.js` extension). [`_.camelCase`](https://lodash.com/docs#camelCase) is used to sanitize file name (i.e. `foo-bar.js` becomes `fooBar`).
+
 ## Usage
 
 Add to `.babelrc`:
