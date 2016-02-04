@@ -120,5 +120,4 @@ describe('babel-plugin-transform-export-default-name', () => {
             test('booleanValue');
         });
     });
-
 });

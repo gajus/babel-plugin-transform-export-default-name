@@ -27,7 +27,6 @@ export default ({
     };
 
     isLiteralDecl = (declaration) => {
-        console.log(declaration.type);
         return declaration.type === 'Literal' ||
             declaration.type === 'NullLiteral' ||
             declaration.type === 'StringLiteral' ||
@@ -50,7 +49,7 @@ export default ({
     };
 
     isNamedClassDecl = (declaration) => {
-        return (declaration.type === 'ClassDeclaration') &&
+        return declaration.type === 'ClassDeclaration' &&
             declaration.id &&
             Boolean(declaration.id.name);
     };
