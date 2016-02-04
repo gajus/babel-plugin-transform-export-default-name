@@ -6,9 +6,13 @@ export default ({
 }) => {
     let
         deduceName,
+        isAnnonClassDecl,
         isAnnonFunctionDecl,
         isIdentifierDecl,
+        isLiteralDecl,
+        isNamedClassDecl,
         isNamedFunctionDecl,
+        isObjectDecl,
         resolveClashingName,
         transform;
 
@@ -22,9 +26,33 @@ export default ({
         return declaration.type === 'Identifier';
     };
 
+    isLiteralDecl = (declaration) => {
+        console.log(declaration.type);
+        return declaration.type === 'Literal' ||
+            declaration.type === 'NullLiteral' ||
+            declaration.type === 'StringLiteral' ||
+            declaration.type === 'BooleanLiteral' ||
+            declaration.type === 'NumericLiteral';
+    };
+
+    isObjectDecl = (declaration) => {
+        return declaration.type === 'ObjectExpression';
+    };
+
     isAnnonFunctionDecl = (declaration) => {
         return (declaration.type === 'FunctionExpression' || declaration.type === 'FunctionDeclaration') &&
             !(declaration.id && declaration.id.name);
+    };
+
+    isAnnonClassDecl = (declaration) => {
+        return (declaration.type === 'ClassExpression' || declaration.type === 'ClassDeclaration') &&
+            !(declaration.id && declaration.id.name);
+    };
+
+    isNamedClassDecl = (declaration) => {
+        return (declaration.type === 'ClassDeclaration') &&
+            declaration.id &&
+            Boolean(declaration.id.name);
     };
 
     transform = (nodePath, name) => {
@@ -33,8 +61,11 @@ export default ({
 
         declaration = nodePath.node.declaration;
         id = t.identifier(name);
+
         if (isAnnonFunctionDecl(declaration)) {
             declaration = t.functionExpression(null, declaration.params, declaration.body, declaration.generator);
+        } else if (isAnnonClassDecl(declaration)) {
+            declaration = t.classExpression(null, declaration.superClass, declaration.body, declaration.decorators || []);
         }
 
         nodePath.replaceWithMultiple([
@@ -79,7 +110,11 @@ export default ({
 
                 declaration = nodePath.node.declaration;
 
-                if (isIdentifierDecl(declaration) || isNamedFunctionDecl(declaration)) {
+                if (isIdentifierDecl(declaration) ||
+                    isNamedFunctionDecl(declaration) ||
+                    isLiteralDecl(declaration) ||
+                    isObjectDecl(declaration) ||
+                    isNamedClassDecl(declaration)) {
                     return;
                 }
 

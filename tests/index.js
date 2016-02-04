@@ -61,6 +61,7 @@ describe('babel-plugin-transform-export-default-name', () => {
             });
         });
     });
+
     context('exporting an anonymous function', () => {
         context('safe file name', () => {
             it('uses the file name to create a temporary variable; exports the temporary variable', () => {
@@ -68,13 +69,56 @@ describe('babel-plugin-transform-export-default-name', () => {
             });
         });
     });
+
     context('exporting named function', () => {
         it('does not transform code', () => {
             test('namedFunction');
         });
     });
-    // @todo test anonymous class (should transform)
-    // @todo test named class (should not transform)
-    // @todo test plain object (should not transform)
-    // @todo test non-object (null, string literal, numbers, boolean) (should not transform)
+
+    context('exporting anonymous class', () => {
+        context('safe file name', () => {
+            it('uses the file name to create a temporary variable for the class; exports the temporary variable', () => {
+                test('anonymousClass');
+            });
+        });
+    });
+
+    context('exporting named class', () => {
+        it('does not transform code', () => {
+            test('namedClass');
+        });
+    });
+
+    context('exporting plain object', () => {
+        it('does not transform code', () => {
+            test('object');
+        });
+    });
+
+
+    context('exporting non object: null', () => {
+        it('does not transform code', () => {
+            test('nullValue');
+        });
+    });
+
+    context('exporting non object: string', () => {
+        it('does not transform code', () => {
+            test('stringValue');
+        });
+    });
+
+    context('exporting non object: number', () => {
+        it('does not transform code', () => {
+            test('numberValue');
+        });
+    });
+
+    context('exporting non object: boolean', () => {
+        it('does not transform code', () => {
+            test('booleanValue');
+        });
+    });
+
 });
