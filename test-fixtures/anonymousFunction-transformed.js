@@ -1,3 +1,4 @@
-let arrowFunction = function () {};
+let anonymousFunction = function () {};
 
-export default arrowFunction;
+export default anonymousFunction;
+

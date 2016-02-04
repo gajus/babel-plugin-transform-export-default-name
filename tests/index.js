@@ -56,20 +56,20 @@ describe('babel-plugin-transform-export-default-name', () => {
             });
         });
         context('clashing name', () => {
-            it.skip('it incrementally appends a numeric index (starting 0) until there is no name conflict', () => {
+            it('it incrementally appends a numeric index (starting 0) until there is no name conflict', () => {
                 test('clashingName');
             });
         });
     });
     context('exporting an anonymous function', () => {
         context('safe file name', () => {
-            it.skip('uses the file name to create a temporary variable; exports the temporary variable', () => {
+            it('uses the file name to create a temporary variable; exports the temporary variable', () => {
                 test('anonymousFunction');
             });
         });
     });
     context('exporting named function', () => {
-        it.skip('does not transform code', () => {
+        it('does not transform code', () => {
             test('namedFunction');
         });
     });
