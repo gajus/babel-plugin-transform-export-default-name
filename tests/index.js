@@ -61,4 +61,20 @@ describe('babel-plugin-transform-export-default-name', () => {
             });
         });
     });
+    context('exporting an anonymous function', () => {
+        context('safe file name', () => {
+            it.skip('uses the file name to create a temporary variable; exports the temporary variable', () => {
+                test('anonymousFunction');
+            });
+        });
+    });
+    context('exporting named function', () => {
+        it.skip('does not transform code', () => {
+            test('namedFunction');
+        });
+    });
+    // @todo test anonymous class (should transform)
+    // @todo test named class (should not transform)
+    // @todo test plain object (should not transform)
+    // @todo test non-object (null, string literal, numbers, boolean) (should not transform)
 });
