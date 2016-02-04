@@ -15,7 +15,8 @@ import path from 'path';
 describe('babel-plugin-transform-export-default-name', () => {
     let fixturesPath,
         getExpectedCode,
-        getInputCode;
+        getInputCode,
+        test;
 
     fixturesPath = path.join(__dirname, './../../test-fixtures');
 
@@ -27,39 +28,36 @@ describe('babel-plugin-transform-export-default-name', () => {
         return path.resolve(fixturesPath, name + '.js');
     };
 
+    test = (name) => {
+        let expectedCode,
+            transformedCode;
+
+        expectedCode = getExpectedCode(name);
+
+        transformedCode = transformFileSync(getInputCode(name), {
+            babelrc: false,
+            plugins: [
+                plugin
+            ]
+        }).code;
+
+        expect(transformedCode).to.equal(expectedCode);
+    };
+
     context('exporting an arrow function', () => {
         context('safe file name', () => {
             it('uses the file name to create a temporary variable; exports the temporary variable', () => {
-                let expectedCode,
-                    transformedCode;
-
-                expectedCode = getExpectedCode('arrowFunction');
-
-                transformedCode = transformFileSync(getInputCode('arrowFunction'), {
-                    babelrc: false,
-                    plugins: [
-                        plugin
-                    ]
-                }).code;
-
-                expect(transformedCode).to.equal(expectedCode);
+                test('arrowFunction');
             });
         });
         context('unsafe file name', () => {
             it('uses _.camelCase to normalize the file name; uses normalized name to create a temporary variable; exports the temporary variable', () => {
-                let expectedCode,
-                    transformedCode;
-
-                expectedCode = getExpectedCode('unsafe-name');
-
-                transformedCode = transformFileSync(getInputCode('unsafe-name'), {
-                    babelrc: false,
-                    plugins: [
-                        plugin
-                    ]
-                }).code;
-
-                expect(transformedCode).to.equal(expectedCode);
+                test('unsafe-name');
+            });
+        });
+        context('clashing name', () => {
+            it.skip('it incrementally appends a numeric index (starting 0) until there is no name conflict', () => {
+                test('clashingName');
             });
         });
     });
