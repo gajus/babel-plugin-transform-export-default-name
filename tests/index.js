@@ -12,27 +12,38 @@ import plugin from './../src';
 import fs from 'fs';
 import path from 'path';
 
-describe('plugin', () => {
-    context('Test valid file names', () => {
-        const fixturesDir = path.join(__dirname, 'fixtures/valid');
+describe('babel-plugin-transform-export-default-name', () => {
+    let fixturesPath,
+        getExpectedCode,
+        getInputCode;
 
-        _.forEach(fs.readdirSync(fixturesDir), (fileName) => {
-            if (!fileName.match(/^transformed-|.map/)) {
-                it('Test ' + fileName, () => {
-                    const expectedCode = _.trim(fs.readFileSync(path.resolve(fixturesDir, 'transformed-' + fileName), 'utf8')),
-                        transformedCode = transformFileSync(path.resolve(fixturesDir, fileName), {
-                            babelrc: false,
-                            plugins: [
-                                plugin
-                            ]
-                        }).code;
+    fixturesPath = path.join(__dirname, './../../test-fixtures');
 
-                    expect(transformedCode).to.equal(expectedCode);
-                });
-            }
+    getExpectedCode = (name) => {
+        return _.trim(fs.readFileSync(path.resolve(fixturesPath, name + '-transformed.js'), 'utf8'));
+    };
+
+    getInputCode = (name) => {
+        return path.resolve(fixturesPath, name + '.js');
+    };
+
+    context('exporting an arrow function', () => {
+        context('safe file name', () => {
+            it('uses the file name to create a temporary variable; exports the temporary variable', () => {
+                let expectedCode,
+                    transformedCode;
+
+                expectedCode = getExpectedCode('arrowFunction');
+
+                transformedCode = transformFileSync(getInputCode('arrowFunction'), {
+                    babelrc: false,
+                    plugins: [
+                        plugin
+                    ]
+                }).code;
+
+                expect(transformedCode).to.equal(expectedCode);
+            });
         });
     });
-    // context('Invalid file names', () => {
-
-    // });
 });
