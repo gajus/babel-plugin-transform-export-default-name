@@ -8,6 +8,20 @@ Babel plugin that transforms `export default` of anonymous functions to named fu
 
 Plugin uses the name of the target file to create a temporary variable. Target resource (arrow function or an anonymous function) is assigned to the latter temporary variable. Temporary value is used in place of function in the export declaration.
 
+## Implementation
+
+Values that are affected:
+
+* anonymous function
+* arrow function
+* anonymous class
+
+Named function, named class and other object as well as literal values are not transformed.
+
+### Export Name
+
+The name used for a temporary variable is derived from the name of the file (excluding `.js` extension). [`_.camelCase`](https://lodash.com/docs#camelCase) is used to sanitize file name (i.e. `foo-bar.js` becomes `fooBar`).
+
 ## Problem
 
 Executing a function without a name (arrow function or an anonymous function) appears as an `(anonymous function)` in the stack trace, e.g.
@@ -53,10 +67,6 @@ let foo = () => {};
 
 export default foo;
 ```
-
-## Export Name
-
-The name used for a temporary variable is derived from the name of the file (excluding `.js` extension). [`_.camelCase`](https://lodash.com/docs#camelCase) is used to sanitize file name (i.e. `foo-bar.js` becomes `fooBar`).
 
 ## Usage
 
