@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-transform-export-default-name",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Babel plugin that replaces default exports to named ones",
   "main": "./dist/index.js",
   "repository": {
