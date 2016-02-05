@@ -8,6 +8,7 @@ export default ({
         deduceName,
         isAnnonClassDecl,
         isAnnonFunctionDecl,
+        isCallDecl,
         isIdentifierDecl,
         isLiteralDecl,
         isNamedClassDecl,
@@ -34,8 +35,14 @@ export default ({
             declaration.type === 'NumericLiteral';
     };
 
+    isCallDecl = (declaration) => {
+        return declaration.type === 'CallExpression';
+    };
+
     isObjectDecl = (declaration) => {
-        return declaration.type === 'ObjectExpression';
+        return declaration.type === 'ObjectExpression' ||
+            declaration.type === 'NewExpression' ||
+            declaration.type === 'ArrayExpression';
     };
 
     isAnnonFunctionDecl = (declaration) => {
@@ -113,6 +120,7 @@ export default ({
                     isNamedFunctionDecl(declaration) ||
                     isLiteralDecl(declaration) ||
                     isObjectDecl(declaration) ||
+                    isCallDecl(declaration) ||
                     isNamedClassDecl(declaration)) {
                     return;
                 }
