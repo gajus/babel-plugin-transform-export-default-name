@@ -3,4 +3,4 @@ export default class {
         this.height = height;
         this.width = width;
     }
-};
+}
