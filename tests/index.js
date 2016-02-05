@@ -120,4 +120,22 @@ describe('babel-plugin-transform-export-default-name', () => {
             test('booleanValue');
         });
     });
+
+    context('exporting string object', () => {
+        it('does not transform code', () => {
+            test('stringObject');
+        });
+    });
+
+    context('exporting new string object', () => {
+        it('does not transform code', () => {
+            test('newStringObject');
+        });
+    });
+
+    context('exporting array', () => {
+        it('does not transform code', () => {
+            test('array');
+        });
+    });
 });
