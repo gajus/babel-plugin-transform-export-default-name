@@ -50,6 +50,44 @@ test();
 
 When you export an anonymous function using `export default`, this function will appear as an `(anonymous function)` the stack trace. `babel-plugin-transform-export-default-name` plugin transforms the code to assign function a name before it is exported.
 
+`./index.js`
+
+```js
+import foo from './foo';
+
+foo();
+```
+
+`./foo.js`
+
+```js
+import bar from './bar';
+
+export default () => {
+    bar();
+};
+```
+
+`./bar.js`
+
+```js
+import baz from './baz';
+
+export default () => {
+    baz();
+};
+```
+
+`./baz.js`
+
+```js
+export default () => {
+    throw new Error('test');
+};
+```
+
+![Stack trace before and after export is given a name](./.README/stack-trace-before-and-after.png)
+
 ## Example
 
 Input file is `./foo.js`.
