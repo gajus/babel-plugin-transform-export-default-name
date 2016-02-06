@@ -8,42 +8,9 @@ export default ({
         deduceName,
         isAnnonClassDecl,
         isAnnonFunctionDecl,
-        isCallDecl,
-        isIdentifierDecl,
-        isLiteralDecl,
-        isNamedClassDecl,
-        isNamedFunctionDecl,
-        isObjectDecl,
+        isArrowFunctionDecl,
         resolveClashingName,
         transform;
-
-    isNamedFunctionDecl = (declaration) => {
-        return declaration.type === 'FunctionDeclaration' &&
-            declaration.id &&
-            Boolean(declaration.id.name);
-    };
-
-    isIdentifierDecl = (declaration) => {
-        return declaration.type === 'Identifier';
-    };
-
-    isLiteralDecl = (declaration) => {
-        return declaration.type === 'Literal' ||
-            declaration.type === 'NullLiteral' ||
-            declaration.type === 'StringLiteral' ||
-            declaration.type === 'BooleanLiteral' ||
-            declaration.type === 'NumericLiteral';
-    };
-
-    isCallDecl = (declaration) => {
-        return declaration.type === 'CallExpression';
-    };
-
-    isObjectDecl = (declaration) => {
-        return declaration.type === 'ObjectExpression' ||
-            declaration.type === 'NewExpression' ||
-            declaration.type === 'ArrayExpression';
-    };
 
     isAnnonFunctionDecl = (declaration) => {
         return (declaration.type === 'FunctionExpression' || declaration.type === 'FunctionDeclaration') &&
@@ -55,10 +22,8 @@ export default ({
             !(declaration.id && declaration.id.name);
     };
 
-    isNamedClassDecl = (declaration) => {
-        return declaration.type === 'ClassDeclaration' &&
-            declaration.id &&
-            Boolean(declaration.id.name);
+    isArrowFunctionDecl = (declaration) => {
+        return declaration.type === 'ArrowFunctionExpression';
     };
 
     transform = (nodePath, name) => {
@@ -116,16 +81,11 @@ export default ({
 
                 declaration = nodePath.node.declaration;
 
-                if (isIdentifierDecl(declaration) ||
-                    isNamedFunctionDecl(declaration) ||
-                    isLiteralDecl(declaration) ||
-                    isObjectDecl(declaration) ||
-                    isCallDecl(declaration) ||
-                    isNamedClassDecl(declaration)) {
-                    return;
+                if (isArrowFunctionDecl(declaration) ||
+                    isAnnonFunctionDecl(declaration) ||
+                    isAnnonClassDecl(declaration)) {
+                    transform(nodePath, deduceName(pluginPass, nodePath.scope));
                 }
-
-                transform(nodePath, deduceName(pluginPass, nodePath.scope));
             }
         }
     };
