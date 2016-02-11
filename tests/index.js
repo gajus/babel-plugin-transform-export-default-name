@@ -37,6 +37,7 @@ describe('babel-plugin-transform-export-default-name', () => {
         transformedCode = transformFileSync(getInputCode(name), {
             babelrc: false,
             plugins: [
+                'syntax-jsx',
                 plugin
             ]
         }).code;
@@ -136,6 +137,12 @@ describe('babel-plugin-transform-export-default-name', () => {
     context('exporting array', () => {
         it('does not transform code', () => {
             test('array');
+        });
+    });
+
+    context('exporting anonymous class (React component)', () => {
+        it('uses the file name to create a temporary variable; exports the temporary variable', () => {
+            test('reactAnnonClass');
         });
     });
 });
