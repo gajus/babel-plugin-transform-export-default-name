@@ -49,7 +49,7 @@ export default ({
         let name;
 
         name = pluginPass && pluginPass.file && pluginPass.file.opts && pluginPass.file.opts.filename;
-        name = name && path.basename(name, '.js');
+        name = name && path.basename(name).replace(/\.jsx?$/, '');
         name = name && _.camelCase(name);
 
         if (!t.isValidIdentifier(name)) {

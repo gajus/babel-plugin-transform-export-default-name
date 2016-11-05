@@ -20,21 +20,21 @@ describe('babel-plugin-transform-export-default-name', () => {
 
     fixturesPath = path.join(__dirname, './../../test-fixtures');
 
-    getExpectedCode = (name) => {
-        return _.trim(fs.readFileSync(path.resolve(fixturesPath, name + '-transformed.js'), 'utf8'));
+    getExpectedCode = (name, extension) => {
+        return _.trim(fs.readFileSync(path.resolve(fixturesPath, name + '-transformed.' + extension), 'utf8'));
     };
 
-    getInputCode = (name) => {
-        return path.resolve(fixturesPath, name + '.js');
+    getInputCode = (name, extension) => {
+        return path.resolve(fixturesPath, name + '.' + extension);
     };
 
-    test = (name) => {
+    test = (name, extension = 'js') => {
         let expectedCode,
             transformedCode;
 
-        expectedCode = getExpectedCode(name);
+        expectedCode = getExpectedCode(name, extension);
 
-        transformedCode = transformFileSync(getInputCode(name), {
+        transformedCode = transformFileSync(getInputCode(name, extension), {
             babelrc: false,
             plugins: [
                 'syntax-jsx',
@@ -59,6 +59,11 @@ describe('babel-plugin-transform-export-default-name', () => {
         context('clashing name', () => {
             it('it incrementally appends a numeric index (starting 0) until there is no name conflict', () => {
                 test('clashingName');
+            });
+        });
+        context('jsx file name', () => {
+            it('handle jsx files', () => {
+                test('jsx', 'jsx');
             });
         });
     });
