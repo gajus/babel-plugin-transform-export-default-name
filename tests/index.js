@@ -55,6 +55,9 @@ describe('babel-plugin-transform-export-default-name', () => {
             it('uses _.camelCase to normalize the file name; uses normalized name to create a temporary variable; exports the temporary variable', () => {
                 test('unsafe-name');
             });
+            it('uses adds an _ when the file name starts with a number; uses normalized name to create a temporary variable; exports the temporary variable', () => {
+                test('1-number-name');
+            });
         });
         context('clashing name', () => {
             it('it incrementally appends a numeric index (starting 0) until there is no name conflict', () => {

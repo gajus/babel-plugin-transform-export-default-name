@@ -52,6 +52,10 @@ export default ({
         name = name && path.basename(name, '.js');
         name = name && _.camelCase(name);
 
+        if (/^[0-9]/.test(name)) {
+            name = '_' + name;
+        }
+
         if (!t.isValidIdentifier(name)) {
             throw Error('Invalid identifier "' + name + '".');
         }
