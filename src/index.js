@@ -46,10 +46,11 @@ export default ({
     };
 
     deduceName = (pluginPass, scope) => {
-        let name;
+        const filename = pluginPass && pluginPass.file && pluginPass.file.opts && pluginPass.file.opts.filename;
 
-        name = pluginPass && pluginPass.file && pluginPass.file.opts && pluginPass.file.opts.filename;
+        let name = filename;
         name = name && path.basename(name, '.js');
+        if (name === 'index') name = path.basename(path.dirname(filename));
         name = name && _.camelCase(name);
 
         if (!t.isValidIdentifier(name)) {
