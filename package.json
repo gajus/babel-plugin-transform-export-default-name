@@ -38,6 +38,6 @@
     "pragmatist": "^3.0.3"
   },
   "dependencies": {
-    "lodash": "^4.2.1"
+    "lodash.camelcase": "^4.3.0"
   }
 }

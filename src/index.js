@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import camelCase from 'lodash.camelcase';
 import path from 'path';
 
 export default ({
@@ -50,7 +50,7 @@ export default ({
 
         name = pluginPass && pluginPass.file && pluginPass.file.opts && pluginPass.file.opts.filename;
         name = name && path.basename(name, '.js');
-        name = name && _.camelCase(name);
+        name = name && camelCase(name);
 
         if (!t.isValidIdentifier(name)) {
             throw Error('Invalid identifier "' + name + '".');
