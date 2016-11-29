@@ -61,6 +61,11 @@ describe('babel-plugin-transform-export-default-name', () => {
                 test('clashingName');
             });
         });
+        context('index file name', () => {
+            it('it uses the dirname instead of file name if file name is "index"', () => {
+                test('index');
+            });
+        });
     });
 
     context('exporting an anonymous function', () => {
