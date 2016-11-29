@@ -1,93 +1,59 @@
-import _ from 'lodash';
-import path from 'path';
+// @flow
+
+import deriveName from './deriveName';
 
 export default ({
-    types: t
+  types: t
+}: {
+  types: Object
 }) => {
-    let
-        deduceName,
-        isAnnonClassDecl,
-        isAnnonFunctionDecl,
-        isArrowFunctionDecl,
-        resolveClashingName,
-        transform;
+  const replace = (path, name: string, replacement) => {
+    const id = t.identifier(name);
 
-    isAnnonFunctionDecl = (declaration) => {
-        return (declaration.type === 'FunctionExpression' || declaration.type === 'FunctionDeclaration') &&
-            !(declaration.id && declaration.id.name);
-    };
+    path.replaceWithMultiple([
+      t.variableDeclaration('const', [
+        t.variableDeclarator(id, replacement)
+      ]),
+      t.exportDefaultDeclaration(id)
+    ]);
+  };
 
-    isAnnonClassDecl = (declaration) => {
-        return (declaration.type === 'ClassExpression' || declaration.type === 'ClassDeclaration') &&
-            !(declaration.id && declaration.id.name);
-    };
+  return {
+    visitor: {
+      ExportDefaultDeclaration (path: Object, state: Object) {
+        const declaration = path.node.declaration;
 
-    isArrowFunctionDecl = (declaration) => {
-        return declaration.type === 'ArrowFunctionExpression';
-    };
-
-    transform = (nodePath, name) => {
-        let declaration,
-            id;
-
-        declaration = nodePath.node.declaration;
-        id = t.identifier(name);
-
-        if (isAnnonFunctionDecl(declaration)) {
-            declaration = t.functionExpression(null, declaration.params, declaration.body, declaration.generator);
-        } else if (isAnnonClassDecl(declaration)) {
-            declaration = t.classExpression(null, declaration.superClass, declaration.body, declaration.decorators || []);
+        if (declaration.id && declaration.id.name) {
+          return;
         }
 
-        nodePath.replaceWithMultiple([
-            t.variableDeclaration('let', [t.variableDeclarator(id, declaration)]),
-            t.exportDefaultDeclaration(id)
-        ]);
-    };
+        const name = deriveName(state, path.scope);
 
-    deduceName = (pluginPass, scope) => {
-        const filename = pluginPass && pluginPass.file && pluginPass.file.opts && pluginPass.file.opts.filename;
+        if (t.isArrowFunctionExpression(declaration)) {
+          const declarationReplacement = t.arrowFunctionExpression(declaration.params, declaration.body, declaration.generator);
 
-        let name = filename;
-        name = name && path.basename(name, '.js');
-        if (name === 'index') name = path.basename(path.dirname(filename));
-        name = name && _.camelCase(name);
+          replace(path, name, declarationReplacement);
 
-        if (!t.isValidIdentifier(name)) {
-            throw Error('Invalid identifier "' + name + '".');
+          return;
         }
 
-        return resolveClashingName(name, scope);
-    };
+        if (t.isFunctionDeclaration(declaration)) {
+          const declarationReplacement = t.functionExpression(null, declaration.params, declaration.body, declaration.generator);
 
-    resolveClashingName = (name, scope) => {
-        let index,
-            resolvedName;
+          replace(path, name, declarationReplacement);
 
-        index = 0;
-        resolvedName = name;
-        while (scope.hasBinding(resolvedName) && index < 100) {
-            resolvedName = name + index++;
+          return;
         }
-        if (index > 100) {
-            throw Error('Couldn\'t resolve clashing name "' + name + '".');
+
+        if (t.isClassDeclaration(declaration)) {
+          const declarationReplacement = t.classExpression(null, declaration.superClass, declaration.body, declaration.decorators || []);
+
+          replace(path, name, declarationReplacement);
+
+          // eslint-disable-next-line no-useless-return
+          return;
         }
-        return resolvedName;
-    };
-
-    return {
-        visitor: {
-            ExportDefaultDeclaration (nodePath, pluginPass) {
-                let declaration;
-
-                declaration = nodePath.node.declaration;
-
-                if (isArrowFunctionDecl(declaration) ||
-                    isAnnonFunctionDecl(declaration) ||
-                    isAnnonClassDecl(declaration)) {
-                    transform(nodePath, deduceName(pluginPass, nodePath.scope));
-                }
-            }
-        }
-    };
+      }
+    }
+  };
 };

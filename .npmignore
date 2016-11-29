@@ -1,5 +1,6 @@
-src
-tests
 coverage
+fixtures
+src
+test
 .*
 *.log

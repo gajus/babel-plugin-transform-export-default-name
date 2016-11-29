@@ -1,43 +1,44 @@
 {
-  "name": "babel-plugin-transform-export-default-name",
-  "version": "1.0.5",
-  "description": "Babel plugin that replaces default exports to named ones",
+  "author": {
+    "email": "gajus@gajus.com",
+    "name": "Gajus Kuizinas"
+  },
+  "ava": {
+    "babel": "inherit",
+    "require": [
+      "babel-register"
+    ]
+  },
+  "dependencies": {
+    "camelcase": "^4.0.0"
+  },
+  "description": "Babel plugin that transforms default exports to named exports.",
+  "devDependencies": {
+    "ava": "^0.17.0",
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-plugin-transform-flow-strip-types": "^6.18.0",
+    "eslint": "^3.11.1",
+    "eslint-config-canonical": "^5.8.0",
+    "flow-bin": "^0.36.0",
+    "husky": "^0.11.9"
+  },
+  "keywords": [
+    "babel-plugin"
+  ],
+  "license": "BSD-3-Clause",
   "main": "./dist/index.js",
+  "name": "babel-plugin-transform-export-default-name",
   "repository": {
     "type": "git",
     "url": "https://github.com/gajus/babel-plugin-transform-export-default-name.git"
   },
-  "keywords": [
-    "babel",
-    "plugin",
-    "transform",
-    "export",
-    "default",
-    "name"
-  ],
-  "author": {
-    "name": "Rajendra Patil",
-    "email": "rrpatil26@gmail.com"
-  },
-  "license": "BSD-3-Clause",
   "scripts": {
-    "pragmatist": "node ./node_modules/.bin/pragmatist --es5",
-    "lint": "npm run pragmatist lint",
-    "test": "npm run pragmatist test",
-    "build": "npm run pragmatist build",
-    "watch": "npm run pragmatist watch",
-    "watch-lint": "npm run pragmatist watch-lint",
-    "watch-test": "npm run pragmatist watch-test",
-    "watch-build": "npm run pragmatist watch-build"
+    "build": "NODE_ENV=production babel ./src --out-dir ./dist --copy-files",
+    "lint": "eslint ./src ./test",
+    "precommit": "npm run lint && npm run test",
+    "test": "npm run build && npm run lint && flow && NODE_ENV=development ava --test"
   },
-  "devDependencies": {
-    "babel-core": "^6.4.5",
-    "babel-plugin-syntax-jsx": "^6.5.0",
-    "chai": "^3.5.0",
-    "lodash": "^4.2.1",
-    "pragmatist": "^3.0.3"
-  },
-  "dependencies": {
-    "lodash": "^4.2.1"
-  }
+  "version": "2.0.0"
 }
