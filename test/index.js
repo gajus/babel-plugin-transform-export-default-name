@@ -56,6 +56,13 @@ test('exporting an async arrow function', (t) => {
   t.true(actual === expected);
 });
 
+test('exporting an anonymous async function', (t) => {
+  const actual = transform('export default async function () {};', 'foo.js');
+  const expected = 'const foo = async function () {}; export default foo;';
+
+  t.true(actual === expected);
+});
+
 test('exporting an anonymous class: uses the file name to create an export variable', (t) => {
   const actual = transform('export default class {}', 'Foo.js');
   const expected = 'const Foo = class {}; export default Foo;';

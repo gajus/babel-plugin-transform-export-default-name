@@ -42,6 +42,18 @@ export default ({
         if (t.isFunctionDeclaration(declaration)) {
           const declarationReplacement = t.functionExpression(null, declaration.params, declaration.body, declaration.generator);
 
+          declarationReplacement.async = declaration.async;
+
+          replace(path, name, declarationReplacement);
+
+          return;
+        }
+
+        if (t.isFunctionExpression(declaration)) {
+          const declarationReplacement = t.functionExpression(null, declaration.params, declaration.body, declaration.generator);
+
+          declarationReplacement.async = declaration.async;
+
           replace(path, name, declarationReplacement);
 
           return;
