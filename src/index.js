@@ -32,6 +32,8 @@ export default ({
         if (t.isArrowFunctionExpression(declaration)) {
           const declarationReplacement = t.arrowFunctionExpression(declaration.params, declaration.body, declaration.generator);
 
+          declarationReplacement.async = declaration.async;
+
           replace(path, name, declarationReplacement);
 
           return;

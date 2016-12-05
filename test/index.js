@@ -49,6 +49,13 @@ test('exporting an arrow function with "index" file name: uses the directory nam
   t.true(actual === expected);
 });
 
+test('exporting an async arrow function', (t) => {
+  const actual = transform('export default async () => {};', 'foo/index.js');
+  const expected = 'const foo = async () => {}; export default foo;';
+
+  t.true(actual === expected);
+});
+
 test('exporting an anonymous class: uses the file name to create an export variable', (t) => {
   const actual = transform('export default class {}', 'Foo.js');
   const expected = 'const Foo = class {}; export default Foo;';
