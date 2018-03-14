@@ -2,8 +2,8 @@
 
 import camelcase from 'camelcase';
 
-const ValidNameRegex = /^[a-z][a-z0-9]+$/;
-const AlphabeticalCharacterRegex = /[a-z]/i;
+const ValidNameRegex = /^[a-zA-Z_$][0-9a-zA-Z_$]+$/;
+const AlphabeticalCharacterRegex = /[a-zA-Z_$]/i;
 
 export default (name: string): string => {
   if (ValidNameRegex.test(name)) {
