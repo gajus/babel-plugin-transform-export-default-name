@@ -9,7 +9,7 @@ export default (state: Object, scope: Object): string => {
 
   let name = filename;
 
-  name = path.basename(name, '.js');
+  name = path.parse(name).name;
 
   if (name === 'index') {
     name = path.basename(path.dirname(filename));

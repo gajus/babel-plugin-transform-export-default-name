@@ -10,12 +10,14 @@ export default ({
   const replace = (path, name: string, replacement) => {
     const id = t.identifier(name);
 
-    path.replaceWithMultiple([
+    const [varDeclPath] = path.replaceWithMultiple([
       t.variableDeclaration('const', [
         t.variableDeclarator(id, replacement)
       ]),
       t.exportDefaultDeclaration(id)
     ]);
+
+    path.scope.registerDeclaration(varDeclPath);
   };
 
   return {
