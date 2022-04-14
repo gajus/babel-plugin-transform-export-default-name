@@ -3,21 +3,24 @@
 import deriveName from './deriveName';
 
 export default ({
-  types: t
+  // eslint-disable-next-line id-length
+  types: t,
 }: {
   types: Object
 }) => {
   const replace = (path, name: string, replacement) => {
     const id = t.identifier(name);
 
-    const [varDeclPath] = path.replaceWithMultiple([
+    const [
+      variableDeclPath,
+    ] = path.replaceWithMultiple([
       t.variableDeclaration('const', [
-        t.variableDeclarator(id, replacement)
+        t.variableDeclarator(id, replacement),
       ]),
-      t.exportDefaultDeclaration(id)
+      t.exportDefaultDeclaration(id),
     ]);
 
-    path.scope.registerDeclaration(varDeclPath);
+    path.scope.registerDeclaration(variableDeclPath);
   };
 
   return {
@@ -69,7 +72,7 @@ export default ({
           // eslint-disable-next-line no-useless-return
           return;
         }
-      }
-    }
+      },
+    },
   };
 };

@@ -4,9 +4,8 @@
     "name": "Gajus Kuizinas"
   },
   "ava": {
-    "babel": "inherit",
     "require": [
-      "babel-register"
+      "@babel/register"
     ]
   },
   "dependencies": {
@@ -14,18 +13,16 @@
   },
   "description": "Babel plugin that transforms default exports to named exports.",
   "devDependencies": {
-    "ava": "^0.17.0",
-    "babel-cli": "^6.18.0",
-    "babel-core": "^6.18.2",
-    "babel-plugin-transform-es2015-block-scoping": "^6.18.0",
-    "babel-plugin-transform-es2015-destructuring": "^6.19.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
-    "babel-plugin-transform-es2015-parameters": "^6.18.0",
-    "babel-plugin-transform-flow-strip-types": "^6.18.0",
-    "eslint": "^3.11.1",
-    "eslint-config-canonical": "^5.8.0",
+    "ava": "^4.2.0",
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/register": "^7.17.7",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "eslint": "^8.13.0",
+    "eslint-config-canonical": "^34.2.1",
     "flow-bin": "^0.36.0",
-    "husky": "^0.11.9"
+    "husky": "^7.0.4"
   },
   "keywords": [
     "babel-plugin"

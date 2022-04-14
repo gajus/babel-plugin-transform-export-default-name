@@ -8,7 +8,7 @@ export default (name: string, scope: Object) => {
     resolvedName = name + index++;
 
     if (index > 100) {
-      throw Error('Couldn\'t resolve clashing name "' + name + '".');
+      throw new Error('Couldn\'t resolve clashing name "' + name + '".');
     }
   }
 
