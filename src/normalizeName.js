@@ -10,10 +10,11 @@ export default (name: string): string => {
     return name;
   }
 
-  const firstCharacter = name.slice(0, 1);
+  let firstCharacter = name.slice(0, 1);
 
   if (!AlphabeticalCharacterRegex.test(firstCharacter)) {
-    throw new Error('Invalid name.');
+    firstCharacter = '_';
+    name = '_' + name;
   }
 
   const firstCharacterUpperCase = firstCharacter.toUpperCase() === firstCharacter;

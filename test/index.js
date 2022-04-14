@@ -35,6 +35,13 @@ test('exporting an arrow function with a file name that matches an existing vari
   t.true(actual === expected);
 });
 
+test('exporting an arrow function with an invalid file name: derives a new name using an underscore', (t) => {
+  const actual = transform('const foo = true; export default () => {};', '1.js');
+  const expected = 'const foo = true; const _1 = () => {}; export default _1;';
+
+  t.true(actual === expected);
+});
+
 test('exporting an arrow function with a file name that matches an existing variable: derives a new name using an incremental index (multiple iterations)', (t) => {
   const actual = transform('const foo = true;\nconst foo0 = true; export default () => {};', 'foo.js');
   const expected = 'const foo = true; const foo0 = true; const foo1 = () => {}; export default foo1;';
